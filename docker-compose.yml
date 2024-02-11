@@ -1,0 +1,25 @@
+version: '3.3'
+services:
+  junior-java-backend-assignment:
+    build:
+      context: '.'
+    ports:
+      - '8080:8080/tcp'
+    depends_on:
+      - database
+    environment:
+      - 'SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/assignment'
+      - 'SPRING_DATASOURCE_USERNAME=assignment'
+      - 'SPRING_DATASOURCE_PASSWORD=abc123'
+      - 'SPRING_JPA_HIBERNATE_DDL_AUTO=update'
+      - 'spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true'
+  database:
+    image: 'postgres:9.6'
+    environment:
+      - 'POSTGRES_DB=assignment'
+      - 'POSTGRES_USER=assignment'
+      - 'POSTGRES_PASSWORD=abc123'
+    volumes:
+      - './database:/docker-entrypoint-initdb.d'
+    ports:
+      - '5432:5432/tcp'
